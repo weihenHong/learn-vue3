@@ -277,7 +277,8 @@ export function createAppAPI<HostElement>(
         context.directives[name] = directive
         return app
       },
-
+      
+      /** 调用时 mount('#app') 这是rootContainer | 根容器 = #app */
       mount(
         rootContainer: HostElement,
         isHydrate?: boolean,
@@ -292,6 +293,10 @@ export function createAppAPI<HostElement>(
                 ` you need to unmount the previous app by calling \`app.unmount()\` first.`
             )
           }
+
+          /** 创建根组件的vnode */
+          // 此处的rootComponent 为一个对象，包括 creatApp时传入的一些配置 和 template （#app 里的）
+          // ？ template 是在哪一步转化来的
           const vnode = createVNode(
             rootComponent as ConcreteComponent,
             rootProps
@@ -310,6 +315,7 @@ export function createAppAPI<HostElement>(
           if (isHydrate && hydrate) {
             hydrate(vnode as VNode<Node, Element>, rootContainer as any)
           } else {
+            /** 调用render函数转化为dom追加到根节点 */
             render(vnode, rootContainer, isSVG)
           }
           isMounted = true

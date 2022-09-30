@@ -1228,6 +1228,7 @@ function baseCreateRenderer(
         startMeasure(instance, `init`)
       }
       setupComponent(instance)
+      // 此处执行后instance上会有render
       if (__DEV__) {
         endMeasure(instance, `init`)
       }
@@ -2329,6 +2330,8 @@ function baseCreateRenderer(
         unmount(container._vnode, null, null, true)
       }
     } else {
+      // 首次patch实际为挂载过程
+      /** 此处vnode会被转化为dom，并追加到根节点  */
       patch(container._vnode || null, vnode, container, null, null, null, isSVG)
     }
     flushPreFlushCbs()
